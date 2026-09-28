@@ -141,7 +141,10 @@ public final class ControllerManagerScreen extends Screen {
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        renderBackground(guiGraphics);
+        // super.render() already calls renderBackground(...) once - it must run first and only
+        // once. Calling renderBackground() again afterwards (as this used to) re-runs the
+        // blur/panorama pass on top of whatever this method already drew, blurring it out.
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
         guiGraphics.drawCenteredString(this.font, this.title, this.width / 2, 12, 0xFFFFFF);
 
         guiGraphics.enableScissor(listX, listTop, listX + listWidth, listBottom);
@@ -161,8 +164,6 @@ public final class ControllerManagerScreen extends Screen {
             drawRow(guiGraphics, draggingId, floatingTop, mouseX, mouseY, true);
         }
         guiGraphics.disableScissor();
-
-        super.render(guiGraphics, mouseX, mouseY, partialTick);
     }
 
     private void drawRow(GuiGraphics g, String id, int rowTop, int mouseX, int mouseY, boolean floating) {

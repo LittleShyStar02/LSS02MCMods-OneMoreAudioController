@@ -29,7 +29,7 @@ public abstract class SoundOptionsScreenMixin {
 
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    @Inject(method = "getAllSoundOptionsExceptMaster", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "getAllSoundOptionsExceptMaster", at = @At("RETURN"), cancellable = true, remap = false)
     private void onemoreaudiocontroller$rebuildSoundOptions(CallbackInfoReturnable<OptionInstance<?>[]> cir) {
         AudioControllerManager.reload();
 

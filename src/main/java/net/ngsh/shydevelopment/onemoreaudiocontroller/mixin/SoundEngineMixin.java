@@ -23,7 +23,8 @@ public abstract class SoundEngineMixin {
     @Inject(
             method = "calculateVolume(Lnet/minecraft/client/resources/sounds/SoundInstance;)F",
             at = @At("RETURN"),
-            cancellable = true
+            cancellable = true,
+            remap = false
     )
     private void onemoreaudiocontroller$customVolume(SoundInstance sound, CallbackInfoReturnable<Float> cir) {
         AudioControllerManager.ControllerDefinition definition = AudioControllerManager.findBySound(sound.getLocation());

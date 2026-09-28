@@ -107,9 +107,11 @@ public final class EditControllerScreen extends Screen {
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        renderBackground(guiGraphics);
-        guiGraphics.drawCenteredString(this.font, this.title, this.width / 2, this.height / 2 - 70, 0xFFFFFF);
+        // super.render() already calls renderBackground(...) once - it must run first and only
+        // once. Calling renderBackground() again afterwards (as this used to) re-runs the
+        // blur/panorama pass on top of whatever this method already drew, blurring it out.
         super.render(guiGraphics, mouseX, mouseY, partialTick);
+        guiGraphics.drawCenteredString(this.font, this.title, this.width / 2, this.height / 2 - 70, 0xFFFFFF);
         if (errorMessage != null) {
             guiGraphics.drawCenteredString(this.font, errorMessage, this.width / 2, errorY, 0xFFFFFF);
         }
