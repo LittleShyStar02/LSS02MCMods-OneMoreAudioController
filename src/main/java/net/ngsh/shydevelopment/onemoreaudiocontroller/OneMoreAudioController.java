@@ -2,20 +2,24 @@ package net.ngsh.shydevelopment.onemoreaudiocontroller;
 
 import net.ngsh.shydevelopment.onemoreaudiocontroller.client.gui.ControllerManagerScreen;
 import net.ngsh.shydevelopment.onemoreaudiocontroller.runtime.GeneratedTranslationPack;
-import net.minecraftforge.client.ConfigScreenHandler;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
-@Mod(OneMoreAudioController.MODID)
+// This mod only touches client-side audio/GUI code, so it's declared client-only: NeoForge won't
+// load this class (and therefore won't load the mod at all, since it has no other @Mod class) on
+// dedicated servers.
+@Mod(value = OneMoreAudioController.MODID, dist = Dist.CLIENT)
 public class OneMoreAudioController {
 
     public static final String MODID = "onemoreaudiocontroller";
 
-    public OneMoreAudioController(FMLJavaModLoadingContext context) {
-        context.getModEventBus().addListener(GeneratedTranslationPack::addPackFinders);
-        context.getModEventBus().addListener(OneMoreAudioController::onClientSetup);
+    public OneMoreAudioController(IEventBus modEventBus, ModContainer modContainer) {
+        modEventBus.addListener(GeneratedTranslationPack::addPackFinders);
+        modEventBus.addListener(OneMoreAudioController::onClientSetup);
 
         // Pure disk I/O (reads controllers.json/orders.json, writes the generated lang file) - no
         // Minecraft/Options dependency, so it's safe here, and it has to run this early: it needs to
@@ -25,14 +29,13 @@ public class OneMoreAudioController {
         // GeneratedTranslationPack.regenerate() for why forcing one here specifically caused crashes.
         AudioControllerManager.reload();
 
-        // Lets external mod-list GUIs (Catalogue, Forge's own Mods screen "Config" button, ...)
+        // Lets external mod-list GUIs (Catalogue, NeoForge's own Mods screen "Config" button, ...)
         // open a settings screen for this mod. We open our own controller manager screen, which
         // lets the player add/rename/delete/reorder controllers in-game, with a shortcut from there
         // into the vanilla Sound Options screen to actually move the sliders.
-        ModLoadingContext.get().registerExtensionPoint(
-                ConfigScreenHandler.ConfigScreenFactory.class,
-                () -> new ConfigScreenHandler.ConfigScreenFactory(
-                        (minecraft, screen) -> new ControllerManagerScreen(screen))
+        modContainer.registerExtensionPoint(
+                IConfigScreenFactory.class,
+                (container, modListScreen) -> new ControllerManagerScreen(modListScreen)
         );
     }
 

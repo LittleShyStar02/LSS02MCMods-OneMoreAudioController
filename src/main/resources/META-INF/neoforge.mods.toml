@@ -2,8 +2,6 @@ modLoader="javafml" #mandatory
 loaderVersion="${loader_version_range}" #mandatory
 license="${mod_license}"
 issueTrackerURL="https://github.com/LSS02-Minecraft-Mods/OneMoreAudioController/issues" #optional
-# This mod only touches client-side audio/GUI code; Forge will skip loading it on dedicated servers.
-clientSideOnly=true #optional, default=false
 
 [[mods]] #mandatory
 modId="${mod_id}" #mandatory
@@ -12,20 +10,20 @@ displayName="${mod_name}" #mandatory
 authors="${mod_authors}" #optional
 description='''${mod_description}'''
 
-# Register our Mixin config so Forge loads it on both client and dev environments.
+# Register our Mixin config so NeoForge loads it on both client and dev environments.
 [[mixins]]
 config="${mod_id}.mixins.json"
 
 [[dependencies.${mod_id}]] #optional
-    modId="forge" #mandatory
-    mandatory=true #mandatory
-    versionRange="${forge_version_range}" #mandatory
+    modId="neoforge" #mandatory
+    type="required" #mandatory
+    versionRange="[${neo_version},)" #mandatory
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.${mod_id}]]
     modId="minecraft"
-    mandatory=true
+    type="required"
     versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"

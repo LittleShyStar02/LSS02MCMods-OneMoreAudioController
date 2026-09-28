@@ -6,7 +6,7 @@ import net.ngsh.shydevelopment.onemoreaudiocontroller.client.CustomSoundOptions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.OptionInstance;
 import net.minecraft.client.Options;
-import net.minecraft.client.gui.screens.SoundOptionsScreen;
+import net.minecraft.client.gui.screens.options.SoundOptionsScreen;
 import net.minecraft.sounds.SoundSource;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;

@@ -20,8 +20,8 @@ import java.util.List;
  * OneMoreAudioControllerApi.registerController(
  *         "mygunmod_gun_sounds",
  *         "Gun Sounds",
- *         new ResourceLocation("mygunmod", "gun_shot"),
- *         new ResourceLocation("mygunmod", "gun_reload")
+ *         ResourceLocation.fromNamespaceAndPath("mygunmod", "gun_shot"),
+ *         ResourceLocation.fromNamespaceAndPath("mygunmod", "gun_reload")
  * );
  * }</pre>
  *

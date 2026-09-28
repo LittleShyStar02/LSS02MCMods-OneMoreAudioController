@@ -14,7 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraftforge.fml.loading.FMLPaths;
+import net.neoforged.fml.loading.FMLPaths;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -554,7 +554,7 @@ public final class AudioControllerManager {
      * It does (see {@link OptionsSoundSourcePatcher}), but that extra work turns out to be both
      * necessary anyway (for API/in-game controllers, which only ever show up after {@code Options}
      * already exists) and, empirically, the only reliable time to touch these JVM internals at all:
-     * injecting that early - before Forge has even begun constructing mods, while classloading
+     * injecting that early - before NeoForge has even begun constructing mods, while classloading
      * itself is still in flux - crashed the JVM outright (a native {@code EXCEPTION_ACCESS_VIOLATION}
      * inside {@code Unsafe}, not a catchable Java exception). Doing the exact same injection here,
      * a bit later, has been reliable. So this mod never touches {@code SoundSource}/{@code Options}

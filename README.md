@@ -2,7 +2,7 @@
 
 [![](https://jitpack.io/v/LSS02-Minecraft-Mods/OneMoreAudioController.svg)](https://jitpack.io/#LSS02-Minecraft-Mods/OneMoreAudioController)
 
-Forge 1.20.1, **fully client-side** mod.
+NeoForge 1.21.1, **fully client-side** mod.
 
 Adds independent audio sliders to the vanilla **Options → Music & Sounds** screen, next to the
 vanilla ones (Master, Music, Jukebox/Noteblocks, Weather, Blocks, Hostile Creatures, Friendly
@@ -170,9 +170,9 @@ repositories {
 }
 
 dependencies {
-    // fg.deobf(...) remaps the published jar to match your ForgeGradle dev mappings, the same as
-    // any other mod dependency added via ForgeGradle.
-    implementation fg.deobf('com.github.LSS02-Minecraft-Mods:OneMoreAudioController:1.1')
+    // NeoForge's dev and production environments both use official Mojang mappings, so no
+    // deobfuscation step is needed here - unlike the old ForgeGradle fg.deobf(...) wrapper.
+    implementation 'com.github.LSS02-Minecraft-Mods:OneMoreAudioController:1.1'
 }
 ```
 
@@ -193,12 +193,12 @@ dependencies {
 </dependency>
 ```
 
-Then declare it as an optional dependency in your `mods.toml`, so your mod still works without it:
+Then declare it as an optional dependency in your `neoforge.mods.toml`, so your mod still works without it:
 
 ```toml
 [[dependencies.yourmodid]]
     modId="onemoreaudiocontroller"
-    mandatory=false
+    type="optional"
     versionRange="[1.1,)"
     ordering="NONE"
     side="CLIENT"
@@ -216,15 +216,15 @@ import net.minecraft.resources.ResourceLocation;
 OneMoreAudioControllerApi.registerController(
         "mygunmod_gun_sounds",
         "Gun Sounds", // English fallback label; translatable via soundCategory.mygunmod_gun_sounds
-        new ResourceLocation("mygunmod", "gun_shot"),
-        new ResourceLocation("mygunmod", "gun_reload")
+        ResourceLocation.fromNamespaceAndPath("mygunmod", "gun_shot"),
+        ResourceLocation.fromNamespaceAndPath("mygunmod", "gun_reload")
 );
 
 // Or without a label - it's auto-generated from the id ("gun_sounds" -> "Gun Sounds")
 OneMoreAudioControllerApi.registerController(
         "mygunmod_gun_sounds",
-        new ResourceLocation("mygunmod", "gun_shot"),
-        new ResourceLocation("mygunmod", "gun_reload")
+        ResourceLocation.fromNamespaceAndPath("mygunmod", "gun_shot"),
+        ResourceLocation.fromNamespaceAndPath("mygunmod", "gun_reload")
 );
 ```
 
@@ -271,7 +271,7 @@ instead of a real sound category.
 
 ## Compatibility with Catalogue / the Mods menu
 
-The mod registers Forge's vanilla `ConfigScreenHandler`, so the "Config" button in the Mods menu
+The mod registers NeoForge's `IConfigScreenFactory` extension point, so the "Config" button in the Mods menu
 and mods like **Catalogue** open the Controller Manager screen described in part 1. Every time it
 opens, `controllers.json` and `orders.json` are reloaded from disk, so you can edit the JSON files
 by hand, reopen that screen, and see the changes immediately - no need to restart Minecraft.
@@ -284,6 +284,5 @@ by hand, reopen that screen, and see the changes immediately - no need to restar
 ./gradlew build
 ```
 
-Requires Java 17 (Minecraft 1.20.1 requires it at runtime). `gradle.properties` is already pinned
-to a local JDK 17 install (`org.gradle.java.installations.paths`): update it to your own
-installation path if needed. The compiled jar ends up in `build/libs/`.
+Requires Java 21 (Minecraft 1.21.1 requires it at runtime); Gradle will download a matching
+toolchain automatically if one isn't already installed. The compiled jar ends up in `build/libs/`.

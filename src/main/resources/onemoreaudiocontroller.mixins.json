@@ -1,8 +1,7 @@
 {
   "required": true,
   "package": "net.ngsh.shydevelopment.onemoreaudiocontroller.mixin",
-  "compatibilityLevel": "JAVA_17",
-  "refmap": "onemoreaudiocontroller.refmap.json",
+  "compatibilityLevel": "JAVA_21",
   "client": [
     "SoundEngineMixin",
     "SoundOptionsScreenMixin"
